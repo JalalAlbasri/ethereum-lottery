@@ -48,4 +48,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+var blockCypher = require('./modules/blockCypher/blockCypher');
+blockCypher.registerBlockCypherWebHook();
+
 module.exports = app;
