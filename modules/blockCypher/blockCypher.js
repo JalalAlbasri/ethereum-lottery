@@ -17,6 +17,11 @@ exports.registerBlockCypherWebHook = function () {
 			url: 'http://ethereum-lottery.herokuapp.com/blockCypherCallback'
 		}
 	}, function (error, response, body) {
-		console.log('[blockCypher] registerBlockCypherWebHook(), respose: ' + JSON.stringify(response));
+		console.log('[blockCypher] registerBlockCypherWebHook(), body.height: ' + body.height);
+
+		//call smartcontract to let it know block updated...
+
+
+
 	});
 };
