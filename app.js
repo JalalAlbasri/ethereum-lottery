@@ -50,8 +50,4 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-app.listen(port, function () {
-  console.log('server started, listening on port ' + app.get('port'));
-});
-
 module.exports = app;
