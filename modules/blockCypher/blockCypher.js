@@ -14,7 +14,7 @@ exports.registerBlockCypherWebHook = function () {
 		json: true,
 		body: {
 			event: 'new-block',
-			url: 'http://ethereum-lottery/blockCypherCallback'
+			url: 'http://ethereum-lottery.herokuapp.com/blockCypherCallback'
 		}
 	}, function (error, response, body) {
 		console.log('[blockCypher] registerBlockCypherWebHook(), respose: ' + JSON.stringify(response));
