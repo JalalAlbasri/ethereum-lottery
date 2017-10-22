@@ -1,4 +1,38 @@
 var request = require('request');
+var Web3 = require('web3');
+var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+var contract = require("truffle-contract");
+// var artifactor = require("truffle-artifactor");
+var artifact = require("../../build/contracts/Lottery.json");
+// var abi = require("../../build/contracts/Lottery.json").abi;
+var Lottery;
+
+
+exports.initBlockCypher = function () {
+	console.log('[initBlockCypher]');
+	Lottery = contract(artifact);
+	Lottery.setProvider(provider);
+
+	//see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
+	Lottery.currentProvider.sendAsync = function () {
+		return Lottery.currentProvider.send.apply(Lottery.currentProvider, arguments);
+	};
+
+	testContract();
+	// pollBlockCypher(30000);
+	// });
+
+};
+
+function testContract() {
+	console.log('[blockCypher] testContract()');
+
+	Lottery.deployed().then(function (instance) {
+		return instance.draw.call();
+	}).then(function (blockHash) {
+		console.log('[blockCypher] testContract(), blockHash: ' + blockHash);
+	});
+}
 
 exports.handleBlockCypherCallback = function (body, callback) {
 	console.log('[blockCypher] handleBlockCypherCallback(), body.height: ' + body.height);
@@ -26,7 +60,7 @@ exports.registerBlockCypherWebHook = function () {
 	});
 };
 
-exports.pollBlockCypher = function (rate) {
+pollBlockCypher = function (rate) {
 	console.log('[blockCypher] pollBlockCypher()');
 
 	var url = "https://api.blockcypher.com/v1/eth/main";
@@ -35,7 +69,13 @@ exports.pollBlockCypher = function (rate) {
 		console.log('[blockCypher] poll()]');
 		request(url, function (error, response, body) {
 			console.log('[blockCypher] poll()] response: ' + JSON.stringify(response));
-
+			//Call the smart contract
+			Lottery.deployed().then(function (instance) {
+				console.log('[blockCypher] testContract()');
+				return instance.draw.call();
+			}).then(function (success) {
+				console.log('[blockCypher] testContract(), success: ' + success);
+			});
 		});
 
 		setTimeout(poll, rate);
