@@ -1,7 +1,7 @@
 var request = require('request');
 
 exports.handleBlockCypherCallback = function (body, callback) {
-	console.log('[blockCypher] handleBlockCypherCallback(), body: ' + JSON.stringify(body));
+	console.log('[blockCypher] handleBlockCypherCallback(), body: ' + body.height);
 	callback();
 };
 
@@ -17,7 +17,7 @@ exports.registerBlockCypherWebHook = function () {
 			url: 'http://ethereum-lottery.herokuapp.com/blockCypherCallback'
 		}
 	}, function (error, response, body) {
-		console.log('[blockCypher] registerBlockCypherWebHook(), body.height: ' + body.height);
+		console.log('[blockCypher] registerBlockCypherWebHook(), respose: ' + JSON.stringify(response));
 
 		//call smartcontract to let it know block updated...
 
