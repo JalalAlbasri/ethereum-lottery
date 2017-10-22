@@ -50,5 +50,6 @@ app.use(function (err, req, res, next) {
 
 var blockCypher = require('./modules/blockCypher/blockCypher');
 // blockCypher.registerBlockCypherWebHook();
+blockCypher.pollBlockCypher(30000);
 
 module.exports = app;

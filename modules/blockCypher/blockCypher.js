@@ -25,3 +25,19 @@ exports.registerBlockCypherWebHook = function () {
 
 	});
 };
+
+exports.pollBlockCypher = function (rate) {
+	console.log('[blockCypher] pollBlockCypher()');
+
+	var url = "https://api.blockcypher.com/v1/eth/main";
+
+	function poll() {
+		console.log('[blockCypher] poll()]');
+		request(url, function (error, response, body) {
+			console.log('[blockCypher] poll()] response: ' + JSON.stringify(response));
+
+		});
+
+		setTimeout(poll, rate);
+	}
+};
