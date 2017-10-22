@@ -40,4 +40,6 @@ exports.pollBlockCypher = function (rate) {
 
 		setTimeout(poll, rate);
 	}
+
+	poll();
 };
