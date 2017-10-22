@@ -1,7 +1,7 @@
 var request = require('request');
 
 exports.handleBlockCypherCallback = function (body, callback) {
-	console.log('[blockCypher] handleBlockCypherCallback(), body: ' + body.height);
+	console.log('[blockCypher] handleBlockCypherCallback(), body.height: ' + body.height);
 	callback();
 };
 
