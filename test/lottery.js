@@ -7,7 +7,7 @@ contract('Lottery', function (accounts) {
 			// return Lottery.new(1, 1, 2, { from: accounts[0] }).then(function (instance) { //with constructor
 			instance.betPrice.call()
 				.then(function (betPrice) {
-					assert.equal(betPrice, 1, "betPrice should be 1");
+					assert.equal(betPrice, 1000000000000000000, "betPrice should be 1");
 					return instance.future.call();
 				})
 				.then(function (future) {
@@ -36,6 +36,7 @@ contract('Lottery', function (accounts) {
 		var finalBalance;
 		var bet;
 		var numBets;
+		var player;
 
 		// return Lottery.new(1, 1, 2, { from: accounts[0] }).then(function (instance) { //with constructor
 		// return Lottery.deployed().then(function (instance) { //without constructor
@@ -55,58 +56,16 @@ contract('Lottery', function (accounts) {
 				return lottery.bets.call(accounts[1]);
 			}).then(function (_bet) {
 				bet = _bet;
-
+				return lottery.players.call(0);
+			}).then(function (_player) {
+				player = _player;
 				// assert.equal(finalBalance, initialBalance + betPrice, "Final balance must be initialBalance + betPrice");
 				assert.equal(numBets, 1, "numBets should be 1");
 				assert.equal(bet, 12345, "bet should be 12345");
+				assert.equal(player, accounts[1], "the first player should be accounts[1]");
 			});
 		});
 	});
-
-	// it("should place a single bet from account 2 on the same deployed lottery from last test", function () {
-
-	// 	var lottery;
-
-	// 	var betPrice;
-	// 	var initialBalance;
-	// 	var finalBalance;
-	// 	var bet1;
-	// 	var bet2;
-	// 	var numBets;
-
-	// 	// return Lottery.new(1, 1, 2, { from: accounts[0] }).then(function (instance) { //with constructor
-	// 	return Lottery.deployed().then(function (instance) { //with constructor
-	// 		lottery = instance;
-	// 		initialBalance = web3.eth.getBalance(lottery.address).toNumber();
-	// 		console.log('initialBalance: ' + initialBalance);
-	// 		lottery.betPrice.call().then(function (_betPrice) {
-	// 			betPrice = _betPrice;
-	// 		}).then(function () {
-	// 			return lottery.placeBet(54321, { from: accounts[2], value: betPrice });
-	// 		}).then(function () {
-	// 			finalBalance = web3.eth.getBalance(lottery.address).toNumber();
-	// 			return lottery.numBets.call();
-	// 		}).then(function (_numBets) {
-	// 			numBets = _numBets;
-	// 			return lottery.bets.call(accounts[1]);
-	// 		}).then(function (_bet1) {
-	// 			console.log('asdf');
-	// 			bet1 = _bet1;
-	// 			return lottery.bets.call(accounts[2]);
-	// 		}).then(function (_bet2) {
-	// 			bet2 = _bet2;
-
-	// 			console.log('bet1: ' + bet1);
-	// 			console.log('bet2: ' + bet2);
-
-	// 			// assert.equal(finalBalance, initialBalance + betPrice, "Final balance must be initialBalance + betPrice");
-	// 			// assert.equal(numBets, 1, "numBets should be 1");
-	// 			assert.equal(bet, 12345, "bet should be 12345");
-	// 			assert.equal(bet, 54321, "bet should be 12345");
-
-	// 		});
-	// 	});
-	// });
 
 	it("should place two bets and the lottery status should be inactive", function () {
 
@@ -220,4 +179,145 @@ contract('Lottery', function (accounts) {
 				});
 		});
 	});
+
+	// it("should place two bets, one bet wins and gets the payout", function () {
+	// 	var lottery;
+
+	// 	var betPrice;
+	// 	var initialBalance1;
+	// 	var finalBalance1;
+	// 	var initialBalance2;
+	// 	var finalBalance2;
+	// 	var bet;
+	// 	var numBets;
+	// 	var player;
+	// 	var result;
+	// 	var potSize;
+	// 	var winner;
+
+	// 	// return Lottery.new(1, 1, 2, { from: accounts[0] }).then(function (instance) { //with constructor
+	// 	// return Lottery.deployed().then(function (instance) { //without constructor
+	// 	return Lottery.new().then(function (instance) { //with constructor
+	// 		lottery = instance;
+	// 		initialBalance1 = web3.fromWei(web3.eth.getBalance(accounts[1]), 'ether').toNumber();
+	// 		initialBalance2 = web3.fromWei(web3.eth.getBalance(accounts[2]), 'ether').toNumber();
+
+	// 		lottery.betPrice.call().then(function (_betPrice) {
+	// 			betPrice = _betPrice;
+	// 		}).then(function () {
+	// 			return lottery.placeBet(123, { from: accounts[1], value: betPrice });
+	// 		}).then(function () {
+	// 			return lottery.placeBet(221, { from: accounts[2], value: betPrice });
+	// 		}).then(function () {
+	// 			return lottery.numBets.call();
+	// 		}).then(function (_numBets) {
+	// 			numBets = _numBets;
+	// 			return lottery.bets.call(accounts[1]);
+	// 		}).then(function (_bet) {
+	// 			bet = _bet;
+	// 			return lottery.players.call(0);
+	// 		}).then(function (_player) {
+	// 			player = _player;
+	// 			return lottery.draw();
+	// 		}).then(function (_winner) {
+	// 			winner = _winner;
+	// 			return lottery.potSize.call();
+	// 		}).then(function (_potSize) {
+	// 			potSize = _potSize;
+	// 			// result = _result;
+
+
+
+	// 			// assert.equal(finalBalance, initialBalance + betPrice, "Final balance must be initialBalance + betPrice");
+	// 			// assert.equal(numBets, 1, "numBets should be 1");
+	// 			// assert.equal(bet, 123, "bet should be 123");
+	// 			// assert.equal(player, accounts[1], "the first player should be accounts[1]");
+	// 			// assert.equal(result, true, "winner has been selected");
+
+	// 			finalBalance1 = web3.fromWei(web3.eth.getBalance(accounts[1]), 'ether').toNumber();
+	// 			finalBalance2 = web3.fromWei(web3.eth.getBalance(accounts[2]), 'ether').toNumber();
+
+	// 			// console.log('potSize: ' + potSize);
+
+	// 			// console.log('accounts[1]: ' + accounts[1]);
+	// 			// console.log('winner: ' + winner);
+
+	// 			// console.log('intial balance accounts[1]: ' + initialBalance1);
+	// 			// console.log('intial balance accounts[2]: ' + initialBalance2);
+	// 			// console.log('final balance accounts[1]: ' + finalBalance1);
+	// 			// console.log('final balance accounts[2]: ' + finalBalance2);
+	// 		});
+	// 	});
+	// });
+
+	it("should place two bets, both bets lose and get refunded", function () {
+		var lottery;
+
+		var betPrice;
+		var initialBalance1;
+		var finalBalance1;
+		var initialBalance2;
+		var finalBalance2;
+		var bet;
+		var numBets;
+		var player;
+		var result;
+		var potSize;
+		var winner;
+
+		// return Lottery.new(1, 1, 2, { from: accounts[0] }).then(function (instance) { //with constructor
+		// return Lottery.deployed().then(function (instance) { //without constructor
+		return Lottery.new().then(function (instance) { //with constructor
+			lottery = instance;
+			initialBalance1 = web3.fromWei(web3.eth.getBalance(accounts[1]), 'ether').toNumber();
+			initialBalance2 = web3.fromWei(web3.eth.getBalance(accounts[2]), 'ether').toNumber();
+
+			lottery.betPrice.call().then(function (_betPrice) {
+				betPrice = _betPrice;
+			}).then(function () {
+				return lottery.placeBet(123, { from: accounts[1], value: betPrice });
+			}).then(function () {
+				return lottery.placeBet(123, { from: accounts[2], value: betPrice });
+			}).then(function () {
+				return lottery.numBets.call();
+			}).then(function (_numBets) {
+				numBets = _numBets;
+				return lottery.bets.call(accounts[1]);
+			}).then(function (_bet) {
+				bet = _bet;
+				return lottery.players.call(0);
+			}).then(function (_player) {
+				player = _player;
+				return lottery.draw();
+			}).then(function (_result) {
+				result = _result;
+				return lottery.potSize.call();
+			}).then(function (_potSize) {
+				potSize = _potSize;
+				// result = _result;
+
+
+
+				// assert.equal(finalBalance, initialBalance + betPrice, "Final balance must be initialBalance + betPrice");
+				// assert.equal(numBets, 1, "numBets should be 1");
+				// assert.equal(bet, 123, "bet should be 123");
+				// assert.equal(player, accounts[1], "the first player should be accounts[1]");
+				// assert.equal(result, true, "winner has been selected");
+
+				finalBalance1 = web3.fromWei(web3.eth.getBalance(accounts[1]), 'ether').toNumber();
+				finalBalance2 = web3.fromWei(web3.eth.getBalance(accounts[2]), 'ether').toNumber();
+
+				console.log('potSize: ' + potSize);
+				console.log('accounts[1]: ' + accounts[1]);
+				console.log('result: ' + result);
+				// console.log('result: ' + JSON.stringify(result));
+
+				console.log('intial balance accounts[1]: ' + initialBalance1);
+				console.log('intial balance accounts[2]: ' + initialBalance2);
+				console.log('final balance accounts[1]: ' + finalBalance1);
+				console.log('final balance accounts[2]: ' + finalBalance2);
+			});
+		});
+	});
+
 });
