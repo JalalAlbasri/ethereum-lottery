@@ -46,6 +46,18 @@ contract EthereumLottery {
 		return this.balance;
 	}
 
+	function getNumBets(uint lotteryIndex) public returns (uint numBets) {
+		return lotteries[lotteryIndex].numBets;
+	}
+
+	function getPlayerAddress(uint lotteryIndex, uint playerIndex) public returns (address playerAddress) {
+		return lotteries[lotteryIndex].players[playerIndex].playerAddress;
+	}
+
+	function getPlayerBet(uint lotteryIndex, uint playerIndex) public returns (uint playerBet) {
+		return lotteries[lotteryIndex].players[playerIndex].bet;
+	}
+
 	function placeBet(uint bet) payable public returns (bool success) {
 		require(lotteries[currentLottery].numBets < quota);
 		require(msg.value == betPrice);

@@ -1,4 +1,4 @@
-var Migrations = artifacts.require("./Lottery.sol");
+var Migrations = artifacts.require("./EthereumLottery.sol");
 
 module.exports = function (deployer) {
   deployer.deploy(Migrations);
