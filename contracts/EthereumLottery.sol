@@ -20,7 +20,6 @@ contract EthereumLottery {
 		// Player[] players;
 		// Player[] winners;
 		uint[] payouts;
-		uint[] refunds;
 		mapping (uint => Player) players;
 	}
 
@@ -58,6 +57,14 @@ contract EthereumLottery {
 		return lotteries[lotteryIndex].players[playerIndex].bet;
 	}
 
+	function getDraw(uint lotteryIndex) public returns (uint draw) {
+		return lotteries[lotteryIndex].draw;
+	}
+
+	function getPayoutsLength(uint lotteryIndex) public returns (uint payoutsLength) {
+		return lotteries[lotteryIndex].payouts.length;
+	}
+	
 	function placeBet(uint bet) payable public returns (bool success) {
 		require(lotteries[currentLottery].numBets < quota);
 		require(msg.value == betPrice);
@@ -76,7 +83,7 @@ contract EthereumLottery {
 		uint drawBlock = lotteries[currentLottery].lastBetBlock + future;
 
 		//for testing only
-		// drawBlock = 1;
+		drawBlock = 1;
 
 		//only proceed if drawBlock has been mined
 		//TODO: use a require instead of if, check the quota and numbets and active status
@@ -84,13 +91,13 @@ contract EthereumLottery {
 
 			//calculate the draw
 			bytes1 drawHex = block.blockhash(drawBlock)[31];
-			uint drawInt = uint(drawHex);
+			lotteries[currentLottery].draw = uint(drawHex);
 
 			//for testing only
-			// drawInt = 123;
+			lotteries[currentLottery].draw = 123;
 
 			for (uint i = 0; i < lotteries[currentLottery].numBets; i++) {
-				if (lotteries[currentLottery].players[i].bet == drawInt) {
+				if (lotteries[currentLottery].players[i].bet == lotteries[currentLottery].draw) {
 					lotteries[currentLottery].payouts.push(i);
 				}
 			}
