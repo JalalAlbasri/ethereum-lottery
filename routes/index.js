@@ -4,7 +4,7 @@ var blockCypher = require('../modules/blockCypher/blockCypher.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Ethreum Lottery' });
 });
 
 router.post('/blockCypherCallback', function (req, res, next) {

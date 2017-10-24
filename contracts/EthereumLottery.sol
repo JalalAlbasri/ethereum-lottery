@@ -6,7 +6,7 @@ contract EthereumLottery {
 	uint public quota; //number of bets for a single draw
 	uint public numLotteries;
 	mapping (uint => Lottery) public lotteries;
-	uint currentLottery;
+	uint public currentLottery;
 
 	struct Player {
 		address playerAddress;

@@ -2,23 +2,21 @@ var request = require('request');
 var Web3 = require('web3');
 var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 var contract = require("truffle-contract");
-// var artifactor = require("truffle-artifactor");
-var artifact = require("../../build/contracts/Lottery.json");
-// var abi = require("../../build/contracts/Lottery.json").abi;
-var Lottery;
+var artifact = require("../../build/contracts/EthereumLottery.json");
+var EthereumLottery;
 
 
 exports.initBlockCypher = function () {
 	console.log('[initBlockCypher]');
-	Lottery = contract(artifact);
-	Lottery.setProvider(provider);
+	EthereumLottery = contract(artifact);
+	EthereumLottery.setProvider(provider);
 
 	//see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
-	Lottery.currentProvider.sendAsync = function () {
-		return Lottery.currentProvider.send.apply(Lottery.currentProvider, arguments);
+	EthereumLottery.currentProvider.sendAsync = function () {
+		return EthereumLottery.currentProvider.send.apply(EthereumLottery.currentProvider, arguments);
 	};
 
-	testContract();
+	// testContract();
 	// pollBlockCypher(30000);
 	// });
 
@@ -27,8 +25,8 @@ exports.initBlockCypher = function () {
 function testContract() {
 	console.log('[blockCypher] testContract()');
 
-	Lottery.deployed().then(function (instance) {
-		return instance.draw.call();
+	EthereumLottery.deployed().then(function (instance) {
+		return instance.draw();
 	}).then(function (success) {
 		// console.log('[blockCypher] testContract(), blockHash: ' + blockHash);
 		console.log('[blockCypher] testContract(), success: ' + success);
@@ -41,7 +39,7 @@ exports.handleBlockCypherCallback = function (body, callback) {
 };
 
 
-pollBlockCypher = function (rate) {
+var pollBlockCypher = function (rate) {
 	console.log('[blockCypher] pollBlockCypher()');
 
 	var url = "https://api.blockcypher.com/v1/eth/main";
@@ -51,9 +49,9 @@ pollBlockCypher = function (rate) {
 		request(url, function (error, response, body) {
 			console.log('[blockCypher] poll()] response: ' + JSON.stringify(response));
 			//Call the smart contract
-			Lottery.deployed().then(function (instance) {
+			EthereumLottery.deployed().then(function (instance) {
 				console.log('[blockCypher] testContract()');
-				return instance.draw.call();
+				return instance.draw();
 			}).then(function (success) {
 				console.log('[blockCypher] testContract(), success: ' + success);
 			});

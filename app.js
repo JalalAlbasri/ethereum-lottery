@@ -25,6 +25,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
+//TODO: need a better way of accessing the abi
+app.use('/build', express.static(path.join(__dirname, 'build')));
+
 
 app.use('/', index);
 
