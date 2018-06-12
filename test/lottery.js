@@ -316,7 +316,7 @@ contract('EthereumLottery', function (accounts) {
 				assert.equal(playerAddress1, accounts[1], "player[0] should be accounts[1]");
 				assert.equal(playerAddress2, accounts[2], "player[1] should be accounts[2]");
 				assert.equal(bet1, 123, "player[0] bet should be 123");
-				assert.equal(bet2, 222, "player[1] bet should be 123");
+        assert.equal(bet2, 222, "player[1] bet should be 222");
 				assert.equal(contractBalanceDifference, 0, "contract balance should be 0 ether");
 				assert.equal(account1BalanceDifference, 1, "account 1 balance should have increased by 1 ether");
 				assert.equal(account2BalanceDifference, -1, "account 2 balance should have decreased by 1 ether");
